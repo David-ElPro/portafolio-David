@@ -1,10 +1,11 @@
 (() => {
 'use strict';
 const translations = {
+'Hi, welcome to my portfolio!':'¡Hola bienvenid@ a mi portafolio!',
 'DESIGN · STRATEGY · DATA':'DISEÑO · ESTRATEGIA · DATOS','Projects':'Proyectos','Websites':'Sitios web','Organic Social':'Redes sociales','Other Designs':'Más diseños','Contact':'Contacto',
 'Business Innovation & Marketing Specialist':'Especialista en innovación de negocios y marketing',"Hi, I'm":'Hola, soy',
 'I combine creativity and data. I design campaigns and digital experiences focused on results, connecting branding, UX/UI, and advanced analytics. I work with GA4, Tag Manager, Google Ads, and SEO to transform metrics into decisions that drive brands.':'Combino creatividad y datos. Diseño campañas y experiencias digitales orientadas a resultados, conectando branding, UX/UI y analítica avanzada. Trabajo con GA4, Tag Manager, Google Ads y SEO para transformar métricas en decisiones que impulsan marcas.',
-'Contact Me':'Hablemos','View Projects':'Ver proyectos','My Projects':'Creatividad con estrategia',
+'View Videos':'Ver videos','Skip to videos':'Ir a videos','Contact Me':'Hablemos','View Projects':'Ver proyectos','My Projects':'Creatividad con estrategia',
 "Here are some of the projects I've worked on, from ads to prototypes.":'Una selección de mis proyectos: desde campañas publicitarias hasta prototipos digitales.',
 "Banners and display ads designed for Linntae's Google campaigns.":'Banners y anuncios de display diseñados para las campañas de Google de Linntae.',
 "Creatives for the Google Display Network, following Móvil Conecta's brand identity.":'Piezas para la Red de Display de Google, alineadas con la identidad de Móvil Conecta.',
@@ -54,6 +55,18 @@ document.getElementById('language-form').addEventListener('submit',e=>{e.prevent
 document.getElementById('close-settings').addEventListener('click',()=>dialog.close());
 dialog.addEventListener('click',e=>{if(e.target===dialog){const r=dialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)dialog.close();}});
 applyLanguage(language);
+const profile = document.querySelector('.profile-portrait');
+const welcome = document.getElementById('profile-welcome');
+if (profile && welcome) {
+  // Start the brief greeting when the photo is visible, including below the fold on mobile.
+  const welcomeObserver = new IntersectionObserver(entries => {
+    if (!entries.some(entry => entry.isIntersecting)) return;
+    welcomeObserver.disconnect();
+    welcome.hidden = false;
+    setTimeout(() => { welcome.hidden = true; }, 4500);
+  }, {threshold: 0.4});
+  welcomeObserver.observe(profile);
+}
 const menuButton=document.getElementById('mobile-menu-button');
 menuButton.setAttribute('aria-controls','mobile-menu');menuButton.setAttribute('aria-expanded','false');
 new MutationObserver(()=>menuButton.setAttribute('aria-expanded',String(!document.getElementById('mobile-menu').classList.contains('hidden')))).observe(document.getElementById('mobile-menu'),{attributes:true,attributeFilter:['class']});
@@ -64,5 +77,5 @@ modal.setAttribute('role','dialog');modal.setAttribute('aria-modal','true');moda
 document.querySelectorAll('.modal-trigger').forEach(img=>{img.tabIndex=0;img.setAttribute('role','button');img.addEventListener('click',()=>{lastImage=img;document.getElementById('modal-image-content').alt=img.alt;modal.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';close.focus();});img.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();img.click();}});});
 modal.addEventListener('click',e=>{if(e.target===modal)closeImage();});
 document.addEventListener('keydown',e=>{if(!modal.classList.contains('visible'))return;if(e.key==='Escape')closeImage();if(e.key==='Tab'){e.preventDefault();close.focus();}});
-document.querySelectorAll('.carousel-container').forEach(carousel=>{carousel.tabIndex=0;carousel.addEventListener('keydown',e=>{if(e.target!==carousel)return;if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();carousel.scrollBy({left:(e.key==='ArrowRight'?1:-1)*carousel.clientWidth*.8,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});}});});
+document.querySelectorAll('.carousel-container:not([data-deck])').forEach(carousel=>{carousel.tabIndex=0;carousel.addEventListener('keydown',e=>{if(e.target!==carousel)return;if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();carousel.scrollBy({left:(e.key==='ArrowRight'?1:-1)*carousel.clientWidth*.8,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});}});});
 })();
